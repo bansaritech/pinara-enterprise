@@ -43,6 +43,15 @@
 
     <link class="icon" rel="icon" type="image/png" href="pe-icon.png">
 
+    <style>
+
+/* @media (max-width: 768px) {
+    #nav-content.block {
+        background-color: blue;
+    }
+} */
+
+    </style>
 
 </head>
 
@@ -58,11 +67,34 @@
             </div>
             <!-- Menu -->
             <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="#services" class="hover:text-gray-500">Services</a></li>
-                    <li><a href="#team" class="hover:text-gray-500">About Us</a></li>
-                    <li><a href="#contact" class="hover:text-gray-500">Contact Us</a></li>
-                </ul>
+
+                <div class="block md:hidden">
+                    <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-gray-300 border-gray-400 hover:text-white hover:border-white">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                    </button>
+                </div>
+                <div class="block flex-grow md:flex md:items-center md:w-auto hidden absolute md:relative z-10 right-5 bg-white" id="nav-content">
+                    <div class="text-sm md:flex-grow text-center">
+                        <a href="#services" class="py-1 px-3 block mt-4 md:inline-block md:mt-0 text-gray-300 hover:text-white mr-4">
+                            Services
+                        </a>
+                        <a href="#team" class="py-1 px-3 block mt-4 md:inline-block md:mt-0 text-gray-300 hover:text-white mr-4">
+                            About Us
+                        </a>
+                        <a href="#contact" class="pt-1 px-3 pb-2 block mt-4 md:inline-block md:mt-0 text-gray-300 hover:text-white">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+            
+
+                <!-- 
+                    <ul class="flex space-x-4">
+                        <li><a href="#services" class="hover:text-gray-500">Services</a></li>
+                        <li><a href="#team" class="hover:text-gray-500">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-gray-500">Contact Us</a></li>
+                    </ul>
+                -->
             </nav>
         </div>
     </header>
@@ -209,6 +241,16 @@
                 el: '.swiper-pagination',
                 clickable: true,
             },
+        });
+
+        // Get the toggle button and navigation content
+        var navToggle = document.getElementById('nav-toggle');
+        var navContent = document.getElementById('nav-content');
+
+        // Add click event listener to toggle button
+        navToggle.addEventListener('click', function() {
+            // Toggle the visibility of the navigation content
+            navContent.classList.toggle('hidden');
         });
     </script>
 
