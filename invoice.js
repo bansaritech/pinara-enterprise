@@ -88,14 +88,9 @@ createApp({
     const screen = ref(0);
     const now = new Date();
     const invoiceDate = ref(`${now.getFullYear()}-${leadingZero(now.getMonth()+1,2)}-${now.getDate()}`);
-    const partyName = ref('Pinara Jayesh');
-    const remarks = ref('Vahechelo maal pacho leta nthi');
-    const items = ref(
-        Array.from(new Array(13)).map(() => ({
-            detail: 'Sample',
-            qty: Math.round(Math.random()*1000 % 10),
-            rate: Math.floor(Math.random() * 1000)/10 }))
-    );
+    const partyName = ref('');
+    const remarks = ref('');
+    const items = ref([{detail: '',qty: 1,rate: 0}]);
     return {
         screen,
         invoiceNumber,
