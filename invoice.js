@@ -27,26 +27,82 @@ createApp({
             return leadingZero(this.invoiceNumber, 4);
         },
         total: function() {
-            return this.items.reduce((sum, item) => sum + (item.qty*item.rate), 0);
+            const total = this.items.reduce((sum, item) => sum + (item.qty*item.rate), 0);
+            return Math.round(total);
         },
         pdf: function() {
             window.print();
-        }
+        },
+        totalInWords: function() {
+            num = this.total();
 
+            if (num === 0) return "Zero";
+
+            const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+            const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+            const thousands = ["", "Thousand", "Million", "Billion", "Trillion"];
+        
+            let words = '';
+        
+            function getChunk(num) {
+                let chunk = '';
+        
+                if (num >= 100) {
+                    chunk += units[Math.floor(num / 100)] + " Hundred ";
+                    num %= 100;
+                }
+        
+                if (num >= 20) {
+                    chunk += tens[Math.floor(num / 10)] + " ";
+                    num %= 10;
+                } else if (num >= 10) {
+                    chunk += teens[num - 10] + " ";
+                    num = 0;
+                }
+        
+                chunk += units[num];
+        
+                return chunk.trim();
+            }
+        
+            let chunkIndex = 0;
+        
+            while (num > 0) {
+                let chunk = num % 1000;
+                if (chunk > 0) {
+                    words = getChunk(chunk) + " " + thousands[chunkIndex] + " " + words;
+                }
+                num = Math.floor(num / 1000);
+                chunkIndex++;
+            }
+        
+            return words.trim();
+        },
+        roundoff: function(num, power = 0) {
+            return (Math.round(num*10**power)/(10**power));
+        }
     },
   setup() {
     const invoiceNumber = ref(1);
     const screen = ref(0);
     const now = new Date();
     const invoiceDate = ref(`${now.getFullYear()}-${leadingZero(now.getMonth()+1,2)}-${now.getDate()}`);
-    const partyName = ref('');
-    const items = ref([{ detail: 'Sample', qty: 1, rate: 0 }]);
+    const partyName = ref('Pinara Jayesh');
+    const remarks = ref('Vahechelo maal pacho leta nthi');
+    const items = ref(
+        Array.from(new Array(13)).map(() => ({
+            detail: 'Sample',
+            qty: Math.round(Math.random()*1000 % 10),
+            rate: Math.floor(Math.random() * 1000)/10 }))
+    );
     return {
         screen,
         invoiceNumber,
         invoiceDate,
         partyName,
         items,
+        remarks
     };
   }
 }).mount('#app')
